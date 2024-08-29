@@ -1,20 +1,82 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-export default function App() {
+import SignupScreen from "./src/screens/SignupScreen";
+import SignInScreen from "./src/screens/SignInScreen";
+import TrackListScreen from "./src/screens/TrackListScreen";
+import TrackDetailScreen from "./src/screens/TrackDetailScreen";
+import CreateTrackScreen from "./src/screens/TrackCreateScreen";
+import AccountScreen from "./src/screens/AccountScreen";
+
+// Stack Navigator for the Sign Up and Sign In screens
+const LoginFlowStack = createStackNavigator();
+
+function LoginFlowNavigator() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <LoginFlowStack.Navigator screenOptions={{ headerShown: true }}>
+      <LoginFlowStack.Screen
+        name="SignUp"
+        component={SignupScreen}
+        options={{ title: "Sign Up" }}
+      />
+      <LoginFlowStack.Screen
+        name="SignIn"
+        component={SignInScreen}
+        options={{
+          title: "Sign In",
+          headerBackTitle: "Sign Up",
+        }}
+      />
+    </LoginFlowStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// Stack Navigator for the Track List and Track Detail screens
+const TrackListStack = createStackNavigator();
+
+function TrackListStackNavigator() {
+  return (
+    <TrackListStack.Navigator>
+      <TrackListStack.Screen name="TrackList" component={TrackListScreen} />
+      <TrackListStack.Screen name="TrackDetail" component={TrackDetailScreen} />
+    </TrackListStack.Navigator>
+  );
+}
+
+// Bottom Tab Navigator for the main application flow
+const MainFlowTabs = createBottomTabNavigator();
+
+function MainFlowNavigator() {
+  return (
+    <MainFlowTabs.Navigator>
+      <MainFlowTabs.Screen
+        name="TrackListFlow"
+        component={TrackListStackNavigator}
+        options={{ headerShown: false }}
+      />
+      <MainFlowTabs.Screen name="TrackCreate" component={CreateTrackScreen} />
+      <MainFlowTabs.Screen name="Account" component={AccountScreen} />
+    </MainFlowTabs.Navigator>
+  );
+}
+
+// Top-level Stack Navigator that switches between login flow and main application flow
+const RootStack = createStackNavigator();
+
+function App() {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="LoginFlow" component={LoginFlowNavigator} />
+          <RootStack.Screen name="MainFlow" component={MainFlowNavigator} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+}
+
+export default App;
