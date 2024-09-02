@@ -1,6 +1,13 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "jsx": "react-jsx", // Enables the new JSX transform with React 17+
+    "esModuleInterop": true, // Allows default imports from CommonJS modules
+    "skipLibCheck": true, // Optional: Skip type checking for declaration files to speed up the build process
+    "forceConsistentCasingInFileNames": true, // Ensures consistent file naming
+    "moduleResolution": "node", // Use Node module resolution strategy
+    "resolveJsonModule": true, // Allows importing JSON files as modules
+    "allowJs": true // Allows compiling JavaScript files
   }
 }

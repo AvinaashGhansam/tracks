@@ -2,24 +2,24 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import SignupScreen from "./src/screens/SignupScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
 import SignInScreen from "./src/screens/SignInScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import CreateTrackScreen from "./src/screens/TrackCreateScreen";
 import AccountScreen from "./src/screens/AccountScreen";
+import { AuthProvider } from "./src/context/AuthContext";
 
 // Stack Navigator for the Sign Up and Sign In screens
 const LoginFlowStack = createStackNavigator();
 
 function LoginFlowNavigator() {
   return (
-    <LoginFlowStack.Navigator screenOptions={{ headerShown: true }}>
+    <LoginFlowStack.Navigator screenOptions={{ headerShown: false }}>
       <LoginFlowStack.Screen
         name="SignUp"
-        component={SignupScreen}
+        component={SignUpScreen}
         options={{ title: "Sign Up" }}
       />
       <LoginFlowStack.Screen
@@ -68,14 +68,14 @@ const RootStack = createStackNavigator();
 
 function App() {
   return (
-    <SafeAreaProvider>
+    <AuthProvider>
       <NavigationContainer>
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
           <RootStack.Screen name="LoginFlow" component={LoginFlowNavigator} />
           <RootStack.Screen name="MainFlow" component={MainFlowNavigator} />
         </RootStack.Navigator>
       </NavigationContainer>
-    </SafeAreaProvider>
+    </AuthProvider>
   );
 }
 
