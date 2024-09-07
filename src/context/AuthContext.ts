@@ -1,5 +1,11 @@
 import authReducer from "../reducers/authReducer";
-import { signIn, signOut, signUp } from "../actions/authActions";
+import {
+  clearErrorMessage,
+  signIn,
+  signOut,
+  signUp,
+  tryLocalSignIn,
+} from "../actions/authActions";
 import createDataContext from "./createDataContext";
 
 // Define the initial state for authentication
@@ -12,9 +18,13 @@ type AuthState = {
 const initialState: AuthState = {
   isSignedIn: false,
   userToken: null,
-  errorMessage: "",
+  errorMessage: null,
 };
 
 // Create AuthContext and AuthProvider using the createDataContext utility
 export const { Context: AuthContext, Provider: AuthProvider } =
-  createDataContext(authReducer, { signIn, signOut, signUp }, initialState);
+  createDataContext(
+    authReducer,
+    { signIn, signOut, signUp, clearErrorMessage, tryLocalSignIn },
+    initialState,
+  );

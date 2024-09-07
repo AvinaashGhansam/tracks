@@ -10,8 +10,8 @@ import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import CreateTrackScreen from "./src/screens/TrackCreateScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { AuthProvider } from "./src/context/AuthContext";
+import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
 
-// Stack Navigator for the Sign Up and Sign In screens
 const LoginFlowStack = createStackNavigator();
 
 function LoginFlowNavigator() {
@@ -46,7 +46,6 @@ function TrackListStackNavigator() {
   );
 }
 
-// Bottom Tab Navigator for the main application flow
 const MainFlowTabs = createBottomTabNavigator();
 
 function MainFlowNavigator() {
@@ -63,7 +62,6 @@ function MainFlowNavigator() {
   );
 }
 
-// Top-level Stack Navigator that switches between login flow and main application flow
 const RootStack = createStackNavigator();
 
 function App() {
@@ -71,6 +69,7 @@ function App() {
     <AuthProvider>
       <NavigationContainer>
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
           <RootStack.Screen name="LoginFlow" component={LoginFlowNavigator} />
           <RootStack.Screen name="MainFlow" component={MainFlowNavigator} />
         </RootStack.Navigator>

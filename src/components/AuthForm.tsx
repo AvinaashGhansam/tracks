@@ -8,10 +8,10 @@ interface IAuthForm {
   errorMessage: string | null;
   onSubmit: () => void;
   buttonTitle: string;
-  email: string;
-  password: string;
-  setEmail: (email: string) => void;
-  setPassword: (password: string) => void;
+  email?: string;
+  password?: string;
+  setEmail?: (email: string) => void;
+  setPassword?: (password: string) => void;
 }
 
 const AuthForm: React.FC<IAuthForm> = ({
@@ -29,22 +29,29 @@ const AuthForm: React.FC<IAuthForm> = ({
       <Spacer>
         <Text style={styles.h1Style}>{headerText}</Text>
       </Spacer>
-      <Input
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
 
-      <Input
-        label="Password"
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-        autoCorrect={false}
-        secureTextEntry={true}
-      />
+      {/* Conditionally render inputs only if setEmail and setPassword are provided */}
+      {setEmail && setPassword && (
+        <>
+          <Input
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+
+          <Input
+            label="Password"
+            value={password}
+            onChangeText={setPassword}
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry={true}
+          />
+        </>
+      )}
+
       {errorMessage ? (
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}

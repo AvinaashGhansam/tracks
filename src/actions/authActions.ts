@@ -1,15 +1,34 @@
 import { Dispatch } from "react";
 import trackerApi from "../api/trackerApi";
-import { AuthAction } from "../types";
+import { AuthAction, AuthStackParamList } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 // Action creator for signIn
-export const signIn = (dispatch: Dispatch<AuthAction>) => (token: string) => {
-  dispatch({ type: "SIGN_IN", payload: token });
-};
+export const signIn =
+  (dispatch: Dispatch<AuthAction>) =>
+  async ({ email, password }: { email: string; password: string }) => {
+    console.log("Signing in with email:", email, "password:", password);
 
-// Action creator for signOut
-export const signOut = (dispatch: Dispatch<AuthAction>) => () => {
+    // 1. Try to sign in
+    try {
+      const res = await trackerApi.post("/signin", { email, password });
+      // When token is retrieved
+      await AsyncStorage.setItem("token", res.data.token);
+      dispatch({ type: "SIGN_IN", payload: res.data.token });
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      }
+      dispatch({
+        type: "ADD_ERROR",
+        payload: "Something went wrong signing in",
+      });
+    }
+  };
+
+export const signOut = (dispatch: Dispatch<AuthAction>) => async () => {
+  await AsyncStorage.removeItem("token");
   dispatch({ type: "SIGN_OUT" });
 };
 
@@ -33,5 +52,22 @@ export const signUp =
         type: "ADD_ERROR",
         payload: "Something went wrong with signup",
       });
+    }
+  };
+
+// BUG: Infinite loop
+export const clearErrorMessage = (dispatch: Dispatch<AuthAction>) => () => {
+  dispatch({ type: "CLEAR_ERROR" });
+};
+
+// Try to find a token in local storage to automatically sign user in
+export const tryLocalSignIn =
+  (dispatch: Dispatch<AuthAction>) => async (): Promise<boolean> => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      dispatch({ type: "SIGN_IN", payload: token });
+      return true;
+    } else {
+      return false;
     }
   };

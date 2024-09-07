@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Text } from "@rneui/base";
-import Spacer from "../components/Spacer";
+import { StyleSheet, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { AuthStackParamList } from "../types";
 import AuthForm from "../components/AuthForm";
+import NavLink from "../components/NavLink";
 
-// Use a hook for navigation to simplify prop passing
 const SignUpScreen: React.FC = () => {
   const [email, setEmail] = useState(""); // State moved here
   const [password, setPassword] = useState(""); // State moved here
@@ -26,6 +24,8 @@ const SignUpScreen: React.FC = () => {
     }
   }, [state.isSignedIn]);
 
+  // TODO: CLEAR ERROR MESSAGE ON SIGN IN AND SIGN UP WHEN NAVIGATION FROM A SCREEN
+
   const handleSignUp = async () => {
     await signUp({ email, password });
   };
@@ -42,13 +42,10 @@ const SignUpScreen: React.FC = () => {
         setEmail={setEmail}
         setPassword={setPassword}
       />
-      <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
-        <Spacer>
-          <Text style={styles.link}>
-            Already have an account? Sign in instead.
-          </Text>
-        </Spacer>
-      </TouchableOpacity>
+      <NavLink
+        screenName="SignIn"
+        text="Already have an account? Sign in instead!"
+      />
     </View>
   );
 };
@@ -58,9 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginBottom: 200,
-  },
-  link: {
-    color: "blue",
   },
 });
 
