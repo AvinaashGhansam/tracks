@@ -17,9 +17,16 @@ const NavLink: React.FC<NavLinkProps> = ({ screenName, text, params }) => {
 
   const handlePress = () => {
     if (screenName === "MainFlow" && params) {
-      navigation.navigate(screenName, params);
-    } else {
-      navigation.navigate(screenName as any);
+      // Specific navigation when screen is "MainFlow" and params are provided
+      navigation.navigate("MainFlow", params);
+    } else if (
+      screenName === "SignIn" ||
+      screenName === "SignUp" ||
+      screenName === "ResolveAuth" ||
+      screenName === "LoginFlow"
+    ) {
+      // Directly navigate to screens that don't require params
+      navigation.navigate(screenName);
     }
   };
 

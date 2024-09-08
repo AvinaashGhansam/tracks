@@ -1,32 +1,33 @@
 import { Dispatch } from "react";
 import trackerApi from "../api/trackerApi";
-import { AuthAction, AuthStackParamList } from "../types";
+import { AuthAction } from "../types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackNavigationProp } from "@react-navigation/stack";
 
 // Action creator for signIn
 export const signIn =
   (dispatch: Dispatch<AuthAction>) =>
-  async ({ email, password }: { email: string; password: string }) => {
-    console.log("Signing in with email:", email, "password:", password);
-
-    // 1. Try to sign in
+  async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<boolean> => {
     try {
       const res = await trackerApi.post("/signin", { email, password });
-      // When token is retrieved
       await AsyncStorage.setItem("token", res.data.token);
       dispatch({ type: "SIGN_IN", payload: res.data.token });
+      return true; // Indicate successful sign-in
     } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.message);
-      }
       dispatch({
         type: "ADD_ERROR",
         payload: "Something went wrong signing in",
       });
+      return false; // Indicate sign-in failure
     }
   };
 
+// Action creator for signOut
 export const signOut = (dispatch: Dispatch<AuthAction>) => async () => {
   await AsyncStorage.removeItem("token");
   dispatch({ type: "SIGN_OUT" });
@@ -35,27 +36,30 @@ export const signOut = (dispatch: Dispatch<AuthAction>) => async () => {
 // Action creator for signUp
 export const signUp =
   (dispatch: Dispatch<AuthAction>) =>
-  async ({ email, password }: { email: string; password: string }) => {
+  async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<boolean> => {
     try {
-      const response = await trackerApi.post("/signup", {
-        email,
-        password,
-      });
+      const response = await trackerApi.post("/signup", { email, password });
       const { token } = response.data;
 
-      // Dispatch the action to update the state
       dispatch({ type: "SIGN_UP", payload: token });
       await AsyncStorage.setItem("token", token);
-      dispatch({ type: "SIGN_UP", payload: token });
+      return true; // Indicate successful sign-up
     } catch (err) {
       dispatch({
         type: "ADD_ERROR",
         payload: "Something went wrong with signup",
       });
+      return false; // Indicate sign-up failure
     }
   };
 
-// BUG: Infinite loop
+// BUG: INFINITE LOOP Clear error message
 export const clearErrorMessage = (dispatch: Dispatch<AuthAction>) => () => {
   dispatch({ type: "CLEAR_ERROR" });
 };
@@ -66,8 +70,8 @@ export const tryLocalSignIn =
     const token = await AsyncStorage.getItem("token");
     if (token) {
       dispatch({ type: "SIGN_IN", payload: token });
-      return true;
+      return true; // User is signed in
     } else {
-      return false;
+      return false; // No token found
     }
   };

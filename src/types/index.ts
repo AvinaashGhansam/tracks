@@ -9,6 +9,6 @@ export type AuthStackParamList = {
   ResolveAuth: undefined;
   SignIn: undefined;
   SignUp: undefined;
-  MainFlow: undefined;
+  MainFlow: { screen: string };
   LoginFlow: undefined;
 };

@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 const ResolveAuthScreen: React.FC = () => {
   const { tryLocalSignIn } = useContext(AuthContext);
   const navigation =
-    useNavigation<StackNavigationProp<AuthStackParamList, "SignUp">>();
+    useNavigation<StackNavigationProp<AuthStackParamList, "MainFlow">>();
 
   // Check for token and navigate based on its existence
   useEffect(() => {

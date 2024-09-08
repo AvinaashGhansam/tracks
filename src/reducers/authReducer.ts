@@ -1,10 +1,5 @@
 import { AuthAction } from "../types";
-
-type AuthState = {
-  isSignedIn: boolean;
-  userToken: string | null;
-  errorMessage: string | null;
-};
+import { AuthState } from "./types";
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
@@ -13,7 +8,11 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     case "SIGN_OUT":
       return { ...state, isSignedIn: false, userToken: null };
     case "SIGN_UP":
-      return { isSignedIn: true, userToken: action.payload, errorMessage: "" };
+      return {
+        isSignedIn: true,
+        userToken: action.payload,
+        errorMessage: null,
+      };
     case "ADD_ERROR":
       return { ...state, errorMessage: action.payload };
     case "CLEAR_ERROR":

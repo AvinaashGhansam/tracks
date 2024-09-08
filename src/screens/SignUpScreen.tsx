@@ -1,30 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StyleSheet, View } from "react-native";
 import { AuthContext } from "../context/AuthContext";
 import { AuthStackParamList } from "../types";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
 
 const SignUpScreen: React.FC = () => {
-  const [email, setEmail] = useState(""); // State moved here
-  const [password, setPassword] = useState(""); // State moved here
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { state, signUp } = useContext(AuthContext);
   const navigation =
-    useNavigation<StackNavigationProp<AuthStackParamList, "SignUp">>();
+    useNavigation<StackNavigationProp<AuthStackParamList, "MainFlow">>();
 
   useEffect(() => {
     if (state.isSignedIn) {
-      // Reset the navigation stack and navigate to MainFlow
       navigation.reset({
         index: 0,
         routes: [{ name: "MainFlow" }],
       });
     }
-  }, [state.isSignedIn]);
-
-  // TODO: CLEAR ERROR MESSAGE ON SIGN IN AND SIGN UP WHEN NAVIGATION FROM A SCREEN
+  }, [state.isSignedIn, navigation]);
 
   const handleSignUp = async () => {
     await signUp({ email, password });

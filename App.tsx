@@ -14,6 +14,13 @@ import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
 
 const LoginFlowStack = createStackNavigator();
 
+/**
+ * Stack Navigator for handing the login flow
+ * - **SignUpScreen**: Allows the user to sign up and use the application
+ * - **SignInScreen**: Allows the user to sign in if an account exist
+ * @component
+ * @return {React.FC} a stack navigator that manages the login and sign-up screens
+ */
 function LoginFlowNavigator() {
   return (
     <LoginFlowStack.Navigator screenOptions={{ headerShown: false }}>
@@ -34,10 +41,17 @@ function LoginFlowNavigator() {
   );
 }
 
-// Stack Navigator for the Track List and Track Detail screens
 const TrackListStack = createStackNavigator();
 
-function TrackListStackNavigator() {
+/**
+ * Stack Navigator for handling the Track List and Track Detail screens.
+ *
+ * - **TrackListScreen**: Displays a list of tracks created by the user.
+ * - **TrackDetailScreen**: Displays detailed information about a specific track.
+ * @component
+ * @returns {JSX.Element} A stack navigator that manages track list and detail views.
+ */
+function TrackListStackNavigator(): JSX.Element {
   return (
     <TrackListStack.Navigator>
       <TrackListStack.Screen name="TrackList" component={TrackListScreen} />
@@ -47,8 +61,16 @@ function TrackListStackNavigator() {
 }
 
 const MainFlowTabs = createBottomTabNavigator();
-
-function MainFlowNavigator() {
+/**
+ * Bottom Tab Navigator for the main flow of the application.
+ *
+ * - **TrackListFlow**: Manages the track list and track detail views.
+ * - **TrackCreateScreen**: Allows the user to create a new track.
+ * - **AccountScreen**: Displays account-related actions and information.
+ *
+ * @returns {JSX.Element} A bottom tab navigator that provides access to the main sections of the app.
+ */
+function MainFlowNavigator(): JSX.Element {
   return (
     <MainFlowTabs.Navigator>
       <MainFlowTabs.Screen
@@ -62,6 +84,15 @@ function MainFlowNavigator() {
   );
 }
 
+/**
+ * Top-level Stack Navigator for switching between authentication flow and main application flow.
+ *
+ * - **ResolveAuthScreen**: Checks if the user is authenticated and navigates accordingly.
+ * - **LoginFlowNavigator**: Manages the login and sign-up flow.
+ * - **MainFlowNavigator**: Manages the main application flow once the user is authenticated.
+ *
+ * @returns {JSX.Element} The root stack navigator that switches between different app flows.
+ */
 const RootStack = createStackNavigator();
 
 function App() {

@@ -1,24 +1,22 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import AuthForm from "../components/AuthForm";
 import NavLink from "../components/NavLink";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthStackParamList } from "../types";
 import { AuthContext } from "../context/AuthContext";
-import { clearErrorMessage } from "../actions/authActions";
 
 const SignInScreen: React.FC = () => {
   const { state, signIn, clearErrorMessage } = useContext(AuthContext);
   const navigation =
-    useNavigation<StackNavigationProp<AuthStackParamList, "SignUp">>();
+    useNavigation<StackNavigationProp<AuthStackParamList, "MainFlow">>();
 
-  const [email, setEmail] = useState(""); // State for email
-  const [password, setPassword] = useState(""); // State for password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (state.isSignedIn) {
-      // Reset the navigation stack and navigate to MainFlow
       navigation.reset({
         index: 0,
         routes: [{ name: "MainFlow" }],
@@ -26,15 +24,12 @@ const SignInScreen: React.FC = () => {
     }
   }, [state.isSignedIn, navigation]);
 
-  // TODO: CLEAR ERROR MESSAGE ON SIGN IN AND SIGN UP WHEN NAVIGATION FROM A SCREEN
-  //
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     return () => {
-  //       clearErrorMessage();
-  //     };
-  //   }, [clearErrorMessage]),
-  // );
+  // BUG: INFINITE LOOP
+  /* useFocusEffect(
+    useCallback(() => {
+      clearErrorMessage();
+    }, [clearErrorMessage]),
+  );*/
 
   const handleSignIn = async () => {
     await signIn({ email, password });
