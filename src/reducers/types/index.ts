@@ -3,3 +3,8 @@ export type AuthState = {
   userToken: string | null;
   errorMessage: string | null;
 };
+export type LocationState = {
+  recording: boolean;
+  location: Array<Location> | null;
+  currentLocation: Location | null;
+};

@@ -5,6 +5,7 @@ export type AuthAction =
   | { type: "ADD_ERROR"; payload: string }
   | { type: "CLEAR_ERROR" };
 
+export type LocationAction = {};
 export type AuthStackParamList = {
   ResolveAuth: undefined;
   SignIn: undefined;

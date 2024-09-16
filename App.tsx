@@ -11,6 +11,7 @@ import CreateTrackScreen from "./src/screens/TrackCreateScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import { AuthProvider } from "./src/context/AuthContext";
 import ResolveAuthScreen from "./src/screens/ResolveAuthScreen";
+import { LocationProvider } from "./src/context/LocationContext";
 
 const LoginFlowStack = createStackNavigator();
 
@@ -97,15 +98,20 @@ const RootStack = createStackNavigator();
 
 function App() {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <RootStack.Navigator screenOptions={{ headerShown: false }}>
-          <RootStack.Screen name="ResolveAuth" component={ResolveAuthScreen} />
-          <RootStack.Screen name="LoginFlow" component={LoginFlowNavigator} />
-          <RootStack.Screen name="MainFlow" component={MainFlowNavigator} />
-        </RootStack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+    <LocationProvider>
+      <AuthProvider>
+        <NavigationContainer>
+          <RootStack.Navigator screenOptions={{ headerShown: false }}>
+            <RootStack.Screen
+              name="ResolveAuth"
+              component={ResolveAuthScreen}
+            />
+            <RootStack.Screen name="LoginFlow" component={LoginFlowNavigator} />
+            <RootStack.Screen name="MainFlow" component={MainFlowNavigator} />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </AuthProvider>
+    </LocationProvider>
   );
 }
 
