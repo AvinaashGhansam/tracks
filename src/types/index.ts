@@ -1,3 +1,5 @@
+import * as Location from "expo-location";
+import { LocationObject } from "expo-location";
 export type AuthAction =
   | { type: "SIGN_IN"; payload: string }
   | { type: "SIGN_OUT" }
@@ -5,7 +7,10 @@ export type AuthAction =
   | { type: "ADD_ERROR"; payload: string }
   | { type: "CLEAR_ERROR" };
 
-export type LocationAction = {};
+export type LocationAction = {
+  type: "add_current_location";
+  payload: LocationObject | null;
+};
 export type AuthStackParamList = {
   ResolveAuth: undefined;
   SignIn: undefined;

@@ -1,3 +1,4 @@
+import * as Location from "expo-location";
 import { Dispatch } from "react";
 import { AuthAction, LocationAction } from "../types";
 
@@ -11,4 +12,6 @@ export const stopRecording =
 
 export const addLocation =
   (dispatch: Dispatch<LocationAction>) =>
-  async (dispatch: Dispatch<LocationAction>) => {};
+  (location: Location.LocationObject | null) => {
+    dispatch({ type: "add_current_location", payload: location });
+  };

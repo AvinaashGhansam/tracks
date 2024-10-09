@@ -1,3 +1,5 @@
+import * as Location from "expo-location";
+
 export type AuthState = {
   isSignedIn: boolean;
   userToken: string | null;
@@ -5,6 +7,6 @@ export type AuthState = {
 };
 export type LocationState = {
   recording: boolean;
-  location: Array<Location> | null;
-  currentLocation: Location | null;
+  location: Location.LocationObject | null;
+  currentLocation: Location.LocationObject | null;
 };
